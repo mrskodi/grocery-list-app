@@ -1,0 +1,52 @@
+<!--Main container which holds the whole page-->
+<div class="container">
+  <div class="jumbotron" style="width:80%; margin:auto;">
+    <h3 class="txt-primary" style="text-align: center;">My Grocery List</h3>
+  </div>
+  <br>
+    <!--Div for input textbox and button to enter listItems-->
+  <div class="input-group" style="width:80%; margin:auto;">
+    <input type="text" class="form-control" id="listItem" placeholder="" aria-label="Enter item name" [(ngModel)]="listItem.name">
+    <span>
+      <button class="btn btn-primary" type="button" id="addListItemBtn" (click)="addListItem()">
+        <i class="fas fa-cart-plus"></i>  
+      </button>
+    </span>
+
+    
+    
+
+  </div>
+  <br>
+    <!--Displaying the items in the list-->
+    <div style="width:80%; margin:auto;">
+    <span *ngIf="list">
+      Number of items in your list: {{list.length}}
+    </span>
+    <ul class="list-group">
+      <li class="list-group-item text-primary" *ngFor="let item of list">
+        <span (click)="strikeListItem(item)" [ngClass]="{'strike': item.strike}">
+          {{item.name}}
+        </span>
+        <span>
+          <button class="btn text-danger float-right hover-cursor" type="button" id="deleteListItemBtn" (click)="delListItem(item)">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </span>
+        <span>
+          <button class="btn text-secondary float-right hover-cursor" type="button" id="editListItemBtn" (click)="editListItem(item)">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+        </span>
+        
+      </li>
+    </ul>
+    </div> <!--End of display List-->
+    <div style="width:80%; margin:auto;">
+      <span [hidden]="hideErrorMsg" class="text-danger">{{errorMsg}}</span>
+      <span [hidden]="hideDuplicateMsg" class="text-secondary"><p> {{duplicateMsg}}</span>
+      <span [hidden]="hideValidDataMsg" class="text-secondary">{{validDataMsg}}</span>
+      <span [hidden]="hideDelItemSuccessMsg" class="text-secondary">{{delItemSuccessMsg}}</span>
+    </div> <!--End of error message div-->
+  
+</div> <!--End of container-->
