@@ -49,10 +49,10 @@ export class GroceryInputComponent implements OnInit {
     this.hideClearAllText = false;
     // Set Validation messages
     this.clearAllText = 'Clear All';
-    this.strikeThroughMessage = 'Click on the strikethrough icon at the end of each item to help you keep track of the item progress.'
+    this.strikeThroughMessage = 'Click on the icon at the end of each item to enable/disable strikethrough.'
   }
 
-  // Invalid Item Error
+  // Invalid Item Error Message
   private enterValidItem(list){
     if(list.length == 0){
       this.hideStrikeThroughMsg = true;
@@ -63,13 +63,13 @@ export class GroceryInputComponent implements OnInit {
     this.errorMsg = 'Enter a valid item to be added to the list.';
   }
 
-  // Delete Success
+  // Delete Success Message
   private delSuccessMessages(item){
     this.hideDelItemSuccessMsg = false;
     this.delItemSuccessMsg = `The item "${item}" was successfully deleted.`;
   }
   
-  // Clear All Item Messages
+  // Clear All Item Success Message
   private clearAllItemsMessages(){
     this.clearItemsMsg = 'All items have been successfully cleared!'
     this.hideClearAllText = true;
@@ -101,7 +101,6 @@ export class GroceryInputComponent implements OnInit {
         if(this.listItem.id == 0){
           this.hideDuplicateMsg = true;
           this.list.push({name: this.listItem.name.trim(), id: new Date().getTime(), strike: false});
-          console.log(this.list);
         }
       } 
       this.listItem = {
@@ -110,7 +109,7 @@ export class GroceryInputComponent implements OnInit {
       }
     }else{
       this.enterValidItem(this.list);
-      this.hideStrikeThroughMsg = true;
+      this.hideStrikeThroughMsg = true
     }
   }
 
@@ -128,8 +127,14 @@ export class GroceryInputComponent implements OnInit {
     this.initializeBoolsAndMessages();
     for(let i=0; i<this.list.length; i++){
       if(item.id == this.list[i].id){
-        // delete the item
+        // delete the item from list
         this.list.splice(i, 1);
+        if(this.listItem){
+          this.listItem = {
+            name: '',
+            id: 0,
+          }
+        }
         this.delSuccessMessages(item.name);
         break;
       }
@@ -148,7 +153,6 @@ export class GroceryInputComponent implements OnInit {
     this.hideClearItemsMsg = false;
     if(this.list.length > 0){
       for(let i=this.list.length; i>=0; i--){
-        console.log(this.list[i]);
         this.list.pop();
         this.clearAllItemsMessages();
       }
