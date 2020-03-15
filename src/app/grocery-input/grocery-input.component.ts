@@ -87,7 +87,8 @@ export class GroceryInputComponent implements OnInit {
   // Else, add item to list
   // If user presses enter without any valid item in text box, display 'Enter valid item' message
   addListItem(){
-    this.initializeBoolsAndMessages();  
+    this.initializeBoolsAndMessages();
+      
     if(this.listItem.name.trim() != ''){
       // CHECK IF ITEM ALREADY EXISTS IN LIST -
       if(this.list.some(li => 
@@ -109,6 +110,7 @@ export class GroceryInputComponent implements OnInit {
       }
     }else{
       this.enterValidItem(this.list);
+      this.hideStrikeThroughMsg = true;
     }
   }
 
