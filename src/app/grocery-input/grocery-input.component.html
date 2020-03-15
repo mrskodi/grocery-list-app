@@ -1,10 +1,11 @@
-<!--Main container which holds the whole page-->
+<!--Begin main container which holds the whole page-->
 <div class="container">
+  <!--Begin title div-->
   <div class="jumbotron" style="width:80%; margin:auto;">
     <h3 class="txt-primary" style="text-align: center;">My Grocery List</h3>
-  </div>
+  </div> <!-- End title div-->
   <br>
-    <!--Div for input textbox and button to enter listItems-->
+  <!--Begin input textbox and button div-->
   <div class="input-group" style="width:80%; margin:auto;">
     <input type="text" class="form-control" id="listItem" placeholder="" aria-label="Enter item name" [(ngModel)]="listItem.name">
     <span>
@@ -12,41 +13,62 @@
         <i class="fas fa-cart-plus"></i>  
       </button>
     </span>
-
-    
-    
-
-  </div>
-  <br>
-    <!--Displaying the items in the list-->
-    <div style="width:80%; margin:auto;">
-    <span *ngIf="list">
-      Number of items in your list: {{list.length}}
-    </span>
-    <ul class="list-group">
-      <li class="list-group-item text-primary" *ngFor="let item of list">
-        <span (click)="strikeListItem(item)" [ngClass]="{'strike': item.strike}">
-          {{item.name}}
-        </span>
-        <span>
-          <button class="btn text-danger float-right hover-cursor" type="button" id="deleteListItemBtn" (click)="delListItem(item)">
-            <i class="far fa-trash-alt"></i>
-          </button>
-        </span>
-        <span>
-          <button class="btn text-secondary float-right hover-cursor" type="button" id="editListItemBtn" (click)="editListItem(item)">
-            <i class="fas fa-pencil-alt"></i>
-          </button>
-        </span>
-        
-      </li>
-    </ul>
-    </div> <!--End of display List-->
-    <div style="width:80%; margin:auto;">
-      <span [hidden]="hideErrorMsg" class="text-danger">{{errorMsg}}</span>
-      <span [hidden]="hideDuplicateMsg" class="text-secondary"><p> {{duplicateMsg}}</span>
-      <span [hidden]="hideValidDataMsg" class="text-secondary">{{validDataMsg}}</span>
-      <span [hidden]="hideDelItemSuccessMsg" class="text-secondary">{{delItemSuccessMsg}}</span>
-    </div> <!--End of error message div-->
+  </div> <!-- End input textbox and button div-->  
   
+  <br>
+
+  <!-- BEGIN DISPLAY-->
+  <!--Begin display div-->
+  <div style="width:80%; margin:auto;">
+    <!--Begin no: of items and clear all div-->
+    <div>
+      <span *ngIf="list" class="text-secondary"><b>
+        Number of items in your list: {{list.length}}</b>
+      </span>
+      <button [hidden]="hideClearAllText" class="btn text-danger float-right hover-cursor" type="button" id="clearAllItemsBtn" (click)="clearAllItemsFromList()">
+        {{clearAllText}}
+      </button>
+    </div> <!--End no: of items and clear all div-->
+    <br>
+    <!--Begin Display of items in the form of list div-->
+    <div>
+      <!--Begin strikethrough info-->
+      <div style="width:80%; margin:auto;">
+        <p [hidden]="hideStrikeThroughMsg" class="text-info">
+          <small>{{strikeThroughMessage}}</small>
+        </p>
+      </div><!--End strikethrough info-->
+      <ul class="list-group" style="margin: auto;">
+        <li class="list-group-item" *ngFor="let item of list">
+        <span [ngClass]="{'strike': item.strike}">
+            {{item.name}}
+          </span>
+          <span> 
+            <button class="btn text-secondary float-right hover-cursor" type="button" id="strikeListItemBtn" (click)="strikeListItem(item)">
+              <i class="fas fa-strikethrough"></i>
+            </button>
+          </span>
+          <span>
+            <button class="btn text-danger float-right hover-cursor" type="button" id="deleteListItemBtn" (click)="delListItem(item)">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </span>
+          <span>
+            <button class="btn text-secondary float-right hover-cursor" type="button" id="editListItemBtn" (click)="editListItem(item)">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+          </span>
+        </li>
+      </ul>
+    </div> <!--End Display of items in the form of list div-->
+    <br>
+    <!--Begin message div-->
+    <div style="width:80%; margin:auto;">
+      <span [hidden]="hideErrorMsg" class="text-danger float-left">{{errorMsg}}</span>
+      <span [hidden]="hideDuplicateMsg" class="text-secondary float-left"><p> {{duplicateMsg}}</span>
+      <span [hidden]="hideValidDataMsg" class="text-secondary float-left">{{validDataMsg}}</span>
+      <span [hidden]="hideDelItemSuccessMsg" class="text-secondary float-left">{{delItemSuccessMsg}}</span>
+      <span [hidden]="hideClearItemsMsg" class="text-secondary float-left">{{clearItemsMsg}}</span>
+    </div> <!--End message div-->
+  </div> <!--End display div-->
 </div> <!--End of container-->

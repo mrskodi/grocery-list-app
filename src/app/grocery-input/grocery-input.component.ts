@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./grocery-input.component.css']
 })
 export class GroceryInputComponent implements OnInit {
-  //listItem: string = '';
+// Declare variable corresponding to [ngModel] in template
   listItem = {name: '', id: 0};
+// Declare array to store user list items
   list = [];
-//  = 'Enter a valid item to be added to list.'
+
+// Declare variables for validation messages / bools to store validation status
   errorMsg: string;
   hideErrorMsg: boolean;
   
@@ -22,24 +24,72 @@ export class GroceryInputComponent implements OnInit {
   delItemSuccessMsg: string;
   hideDelItemSuccessMsg: boolean;
 
+  clearItemsMsg: string;
+  hideClearItemsMsg: boolean;
+
+  strikeThroughMessage: string;
+  hideStrikeThroughMsg: boolean;
+
+  clearAllText: string;
+  hideClearAllText: boolean;
   constructor() { }
 
   ngOnInit(): void {
-    // seting the initial values of the 4 bools
+
   }
 
-  private initializeBools(){
+  // Set initial values of bools and set validation messages
+  private initializeBoolsAndMessages(){
     this.hideErrorMsg = true;
     this.hideDuplicateMsg = true;
     this.hideValidDataMsg = true;
     this.hideDelItemSuccessMsg = true;
+    this.hideClearItemsMsg = true;
+    this.hideStrikeThroughMsg = false;
+    this.hideClearAllText = false;
+    // Set Validation messages
+    this.clearAllText = 'Clear All';
+    this.strikeThroughMessage = 'Click on the strikethrough icon at the end of each item to help you keep track of the item progress.'
+  }
+
+  // Invalid Item Error
+  private enterValidItem(list){
+    if(list.length == 0){
+      this.hideStrikeThroughMsg = true;
+    }
+    this.hideStrikeThroughMsg = false;
+    this.hideErrorMsg = false;
+    this.hideClearAllText = true;
+    this.errorMsg = 'Enter a valid item to be added to the list.';
+  }
+
+  // Delete Success
+  private delSuccessMessages(item){
+    this.hideDelItemSuccessMsg = false;
+    this.delItemSuccessMsg = `The item "${item}" was successfully deleted.`;
   }
   
+  // Clear All Item Messages
+  private clearAllItemsMessages(){
+    this.clearItemsMsg = 'All items have been successfully cleared!'
+    this.hideClearAllText = true;
+    this.hideStrikeThroughMsg = true;
+  }
+
+  // No Item in List settings
+  private noItemInListSettings(){
+    this.hideStrikeThroughMsg = true;
+    this.hideClearAllText = true;
+  }
+
+  // ADD an item to list[]
+  // Check if item already exists, if yes, provide message that Item already exists
+  // Else, add item to list
+  // If user presses enter without any valid item in text box, display 'Enter valid item' message
   addListItem(){
+    this.initializeBoolsAndMessages();  
     if(this.listItem.name.trim() != ''){
-      this.initializeBools();
       // CHECK IF ITEM ALREADY EXISTS IN LIST -
-      // when typed as is, typed in singular form or in plural form
       if(this.list.some(li => 
         (li.name.trim() === this.listItem.name || li.name.trim() === this.listItem.name+'s' ||
         li.name.trim() === this.listItem.name.slice(0,-1) || li.name.trim() === this.listItem.name.slice(0,-2) || li.name.trim() === this.listItem.name+'es') && (this.listItem.id == 0))){
@@ -58,34 +108,56 @@ export class GroceryInputComponent implements OnInit {
         id: 0
       }
     }else{
-      this.hideErrorMsg = false;
-      this.errorMsg = 'Enter a valid item.'
+      this.enterValidItem(this.list);
     }
-  }// end of addListItem
+  }
 
-
-  // Edit an item in the list
+  // EDIT an existing item
+  // When the user clicks on 'pencil' icon, the item is displayed on the input text box to be edited.
+  // The user types in the new value and is updated in the list.
   editListItem(item){
-    this.initializeBools();
+    this.initializeBoolsAndMessages();
     this.listItem = item;
   }
 
-  // Delete an item from list typed in through the text box
+  // DELETE an existing item
+  // When user clicks on 'trash' icon, the corresponding item is deleted from list.
   delListItem(item){
-    this.initializeBools();
+    this.initializeBoolsAndMessages();
     for(let i=0; i<this.list.length; i++){
       if(item.id == this.list[i].id){
         // delete the item
         this.list.splice(i, 1);
-        this.hideDelItemSuccessMsg = false;
-        this.delItemSuccessMsg = `The item "${item.name}" was successfully deleted.`
+        this.delSuccessMessages(item.name);
         break;
+      }
+    }
+    if(this.list.length == 0){
+      // this.hideStrikeThroughMsg = true;
+      // this.hideClearAllText = true;
+      this.noItemInListSettings();
+    }
+  }
+
+  // CLEAR ALL items from list
+  // When user clicks on 'Clear All', all items are removed.
+  clearAllItemsFromList(){
+    this.initializeBoolsAndMessages();
+    this.hideClearItemsMsg = false;
+    if(this.list.length > 0){
+      for(let i=this.list.length; i>=0; i--){
+        console.log(this.list[i]);
+        this.list.pop();
+        this.clearAllItemsMessages();
       }
     }
   }
 
-  // Strike the list Item
+  // STRIKE/UNSTRIKE the list Item
+  // Upon clicking the strikethrough icon at the end of each item,
+  // the user is able to either enable or disable strikethrough for that respective item.
   strikeListItem(item){
+    this.initializeBoolsAndMessages();
     for(let i=0; i<this.list.length; i++){
       if(item.id == this.list[i].id){
         if(this.list[i].strike){
@@ -99,34 +171,3 @@ export class GroceryInputComponent implements OnInit {
     }
   }
 }
-
-
-// Validations to be done - 
-// 1. No items in list ---> Click add button ---> Display Error "Enter a valid item to be added to list" - DONE
-// 2. You are at scenario 1 ---> Enter a valid entry ---> New item should be added + Error should go away. Right now,no matter how many items are added, the error Msg does not go away - DONE
-// 3. If you enter an already existing item ---> Display Msg ---> Item already exists in list - DONE
-// 4. If only spaces entered ----> Display error Msg ---> Enter a valid item to be added to the list - Use angular form validator for this - refer to tv-show-app  - DONE
-
-
-// // Select items to be deleted
-// selectListItem(listItem: string){
-//   // change the icon to tickmark
-//   // select the icon
-//   var circleIcon = document.querySelector('#circle');
-//   console.log(circleIcon);
-
-//   // add event listener
-//   circleIcon.addEventListener("click", function(){
-//     console.log(this);
-//   })
-
-//   // add the selectedItem into a new array
-//   this.selectedList.push(listItem);
-//   //console.log(this.selectedList);
-// }
-
-
-  //   this.list.includes(this.listItem.name) || this.list.includes(this.listItem.name+'s') || this.list.includes(this.listItem.name.slice(0, -1))){
-    // // If yes, delete
-    //   this.hideItemNotFoundMsg = true;
-    //   this.list.splice(this.list.indexOf(this.listItem), 1);
