@@ -12,9 +12,6 @@ export class GroceryInputComponent implements OnInit {
   list = [];
 
 // Declare variables for validation messages / bools to store validation status
-  // errorMsg: string;
-  // hideErrorMsg: boolean;
-  
   duplicateMsg: string;
   hideDuplicateMsg: boolean;
 
@@ -40,7 +37,6 @@ export class GroceryInputComponent implements OnInit {
 
   // Set initial values of bools and set validation messages
   private initializeBoolsAndMessages(){
-    //this.hideErrorMsg = true;
     this.hideDuplicateMsg = true;
     this.hideValidDataMsg = true;
     this.hideDelItemSuccessMsg = true;
@@ -58,7 +54,6 @@ export class GroceryInputComponent implements OnInit {
       this.hideStrikeThroughMsg = true;
     }
       this.hideStrikeThroughMsg = false;
-      //this.hideErrorMsg = false;
       this.hideValidDataMsg = false;
       this.hideClearAllText = true;
       this.validDataMsg = '* Enter a valid item to be added to the list.';
@@ -142,8 +137,6 @@ export class GroceryInputComponent implements OnInit {
       }
     }
     if(this.list.length == 0){
-      // this.hideStrikeThroughMsg = true;
-      // this.hideClearAllText = true;
       this.noItemInListSettings();
     }
   }
