@@ -12,8 +12,8 @@ export class GroceryInputComponent implements OnInit {
   list = [];
 
 // Declare variables for validation messages / bools to store validation status
-  errorMsg: string;
-  hideErrorMsg: boolean;
+  // errorMsg: string;
+  // hideErrorMsg: boolean;
   
   duplicateMsg: string;
   hideDuplicateMsg: boolean;
@@ -40,7 +40,7 @@ export class GroceryInputComponent implements OnInit {
 
   // Set initial values of bools and set validation messages
   private initializeBoolsAndMessages(){
-    this.hideErrorMsg = true;
+    //this.hideErrorMsg = true;
     this.hideDuplicateMsg = true;
     this.hideValidDataMsg = true;
     this.hideDelItemSuccessMsg = true;
@@ -54,24 +54,26 @@ export class GroceryInputComponent implements OnInit {
 
   // Invalid Item Error Message
   private enterValidItem(list){
-    if(list.length == 0){
+    if(this.list.length == 0){
       this.hideStrikeThroughMsg = true;
     }
-    this.hideStrikeThroughMsg = false;
-    this.hideErrorMsg = false;
-    this.hideClearAllText = true;
-    this.errorMsg = 'Enter a valid item to be added to the list.';
+      this.hideStrikeThroughMsg = false;
+      //this.hideErrorMsg = false;
+      this.hideValidDataMsg = false;
+      this.hideClearAllText = true;
+      this.validDataMsg = '* Enter a valid item to be added to the list.';
+    
   }
 
   // Delete Success Message
   private delSuccessMessages(item){
     this.hideDelItemSuccessMsg = false;
-    this.delItemSuccessMsg = `The item "${item}" was successfully deleted.`;
+    this.delItemSuccessMsg = `* The item "${item}" was successfully deleted.`;
   }
   
   // Clear All Item Success Message
   private clearAllItemsMessages(){
-    this.clearItemsMsg = 'All items have been successfully cleared!'
+    this.clearItemsMsg = '* All items have been successfully cleared!'
     this.hideClearAllText = true;
     this.hideStrikeThroughMsg = true;
   }
@@ -95,7 +97,7 @@ export class GroceryInputComponent implements OnInit {
         (li.name.trim() === this.listItem.name || li.name.trim() === this.listItem.name+'s' ||
         li.name.trim() === this.listItem.name.slice(0,-1) || li.name.trim() === this.listItem.name.slice(0,-2) || li.name.trim() === this.listItem.name+'es') && (this.listItem.id == 0))){
           this.hideDuplicateMsg = false;
-          this.duplicateMsg = `The entered item "${this.listItem.name}" already exists in list.`
+          this.duplicateMsg = `* The entered item "${this.listItem.name}" already exists in list.`
       }  
       else{
         if(this.listItem.id == 0){
@@ -109,7 +111,7 @@ export class GroceryInputComponent implements OnInit {
       }
     }else{
       this.enterValidItem(this.list);
-      this.hideStrikeThroughMsg = true
+      this.hideStrikeThroughMsg = true;
     }
   }
 
@@ -154,8 +156,10 @@ export class GroceryInputComponent implements OnInit {
     if(this.list.length > 0){
       for(let i=this.list.length; i>=0; i--){
         this.list.pop();
-        this.clearAllItemsMessages();
+        
       }
+      this.clearAllItemsMessages();
+      this.list.length == 0;
     }
   }
 
